@@ -1,5 +1,5 @@
 {
-  "name": "fastify-bee-queue",
+  "name": "@autotelic/fastify-bee-queue",
   "version": "0.0.0",
   "description": "Fastify plugin for Bee-queue Integration",
   "main": "index.js",
@@ -8,7 +8,6 @@
   },
   "scripts": {
     "test": "c8 --100 ava",
-    "example": "echo no example provided",
     "lint": "standard",
     "fix": "npm run lint -- --fix",
     "validate": "npm run lint && npm run test"
@@ -31,6 +30,7 @@
   },
   "homepage": "https://github.com/autotelic/fastify-bee-queue#readme",
   "dependencies": {
+    "bee-queue": "^1.4.0",
     "fastify-plugin": "^3.0.0"
   },
   "devDependencies": {
@@ -38,6 +38,7 @@
     "c8": "^7.10.0",
     "fastify": "^3.0.0",
     "fastify-cli": "^2.5.1",
+    "fastify-redis": "^4.3.3",
     "lint-staged": "^12.1.2",
     "standard": "^16.0.3"
   },
