@@ -9,9 +9,15 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        node-version: [14.x, 16.x]
 
     name: Node.js ${{ matrix.node }}
+
+    services:
+      redis:
+        image: redis:alpine
+        ports:
+        - 6379:6379
 
     steps:
       - uses: actions/checkout@v2
@@ -30,7 +36,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
-        node-version: 12.x
+        node-version: 16.x
         registry-url: https://registry.npmjs.org/
     - run: npm publish --access public
       env:

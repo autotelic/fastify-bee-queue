@@ -1,9 +1,9 @@
 'use strict'
 
-const fp = require('fastify-plugin')
+const fastifyBeeQueue = require('./plugin')
+const workerBees = require('./lib/workerBees')
 
-async function fastifyBeeQueue (fastify, opts) {
-
+module.exports = {
+  workerBees,
+  fastifyBeeQueue
 }
-
-module.exports = fp(fastifyBeeQueue, { name: 'fastify-bee-queue' })
