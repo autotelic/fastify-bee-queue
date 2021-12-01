@@ -82,7 +82,7 @@ We provide the following usage examples and recipes:
 
 #### Options
 
-- `namespace`: The namespace that thee plugin decorators will be added to.
+- `namespace`: The namespace that the plugin decorators will be added to.
 Defaults to `bq`
 
 All remaining options will be passed to the Queue instances when they are created.

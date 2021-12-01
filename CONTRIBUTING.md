@@ -2,7 +2,7 @@
 
 ## Setup
 
-Start A redis instance locally
+Start a redis instance locally
 
 `$ docker compose up`
 

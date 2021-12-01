@@ -19,7 +19,7 @@ docker-compose.yml file in the root of this project
 
 - Schedule a job with an http request:
 
- `curl -X POST :3000/queue  -H 'Content-Type: application/json' -d '{"x":1, "y":7}'`
+ `curl -X POST http://localhost:3000/queue  -H 'Content-Type: application/json' -d '{"x":1, "y":7}'`
 
 You will see the job be consumed by the worker and the sum of x and y will be
 logged out to the console of the worker process.
