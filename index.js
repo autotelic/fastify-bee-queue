@@ -1,7 +1,7 @@
 'use strict'
 
 const fastifyBeeQueue = require('./plugin')
-const workerBees = require('./lib/worker-bee')
+const workerBees = require('./lib/workerBees')
 
 module.exports = {
   workerBees,
