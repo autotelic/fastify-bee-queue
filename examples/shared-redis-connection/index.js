@@ -1,6 +1,6 @@
 const Fastify = require('fastify')
 
-const fastifyBeeQueue = require('../../')
+const { fastifyBeeQueue } = require('../../')
 
 const { QUEUE_NAME } = require('./constants')
 

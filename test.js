@@ -3,13 +3,13 @@
 const test = require('ava')
 
 const Queue = require('bee-queue')
-const plugin = require('./')
+const { fastifyBeeQueue } = require('./')
 
 const TEST_QUEUE_NAME = 'test-queue'
 
 test('"create" creates a worker Queue instance', async (t) => {
   const app = require('fastify')()
-  app.register(plugin)
+  app.register(fastifyBeeQueue)
   await app.ready()
 
   const q = await app.bq.create(TEST_QUEUE_NAME)
@@ -20,7 +20,7 @@ test('"create" creates a worker Queue instance', async (t) => {
 
 test('createProducer creates a producer Queue instance', async (t) => {
   const app = require('fastify')()
-  app.register(plugin)
+  app.register(fastifyBeeQueue)
   await app.ready()
 
   const q = await app.bq.createProducer(TEST_QUEUE_NAME)
@@ -31,7 +31,7 @@ test('createProducer creates a producer Queue instance', async (t) => {
 
 test('"createProducer" registers Queue instances in the queues object', async (t) => {
   const app = require('fastify')()
-  app.register(plugin)
+  app.register(fastifyBeeQueue)
   await app.ready()
 
   await app.bq.createProducer(TEST_QUEUE_NAME)
@@ -44,7 +44,7 @@ test('"createProducer" registers Queue instances in the queues object', async (t
 
 test('"create" registers Queue instances in the queues object', async (t) => {
   const app = require('fastify')()
-  app.register(plugin)
+  app.register(fastifyBeeQueue)
   await app.ready()
 
   await app.bq.create(TEST_QUEUE_NAME)
@@ -57,7 +57,7 @@ test('"create" registers Queue instances in the queues object', async (t) => {
 
 test('"create": Cannot override existing stored Queues in the queues decorator', async (t) => {
   const app = require('fastify')()
-  app.register(plugin)
+  app.register(fastifyBeeQueue)
   await app.ready()
 
   await app.bq.create(TEST_QUEUE_NAME)
@@ -68,7 +68,7 @@ test('"create": Cannot override existing stored Queues in the queues decorator',
 
 test('"createProducer": Cannot override existing stored Queues in the queues decorator', async (t) => {
   const app = require('fastify')()
-  app.register(plugin)
+  app.register(fastifyBeeQueue)
   await app.ready()
 
   await app.bq.createProducer(TEST_QUEUE_NAME)

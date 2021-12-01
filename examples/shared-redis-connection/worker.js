@@ -1,17 +1,29 @@
-const Queue = require('bee-queue')
+'use strict'
 
 const { QUEUE_NAME } = require('./constants')
+const { workerBees } = require('../../')
 
-const queue = new Queue(QUEUE_NAME)
-
-queue.on('ready', () => {
-  queue.process((job, done) => {
-    setTimeout(() => {
-      const result = job.data.x + job.data.y
-      console.log(`job: ${job.id} - result: ${result}`)
-      done(null, result)
-    }, 5000)
+function sleep (ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms)
   })
+}
 
-  console.log(`${QUEUE_NAME} - processing jobs`)
-})
+async function processor (job) {
+  await sleep(4000)
+  const result = job.data.x + job.data.y
+  console.log(`job: ${job.id} - result: ${result}`)
+  return result
+}
+
+const workers = [
+  {
+    name: QUEUE_NAME,
+    processor,
+    options: {}
+  }
+]
+
+const { start } = workerBees({ workers })
+
+start()
