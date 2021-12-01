@@ -14,7 +14,7 @@ npm i @autotelic/fastify-bee-queue
 ```js
 // Server.js
 const Fastify = require('fastify')
-const fastifyBeeQueue = require('@autotelic/fastify-bee-queue')
+const { fastifyBeeQueue } = require('@autotelic/fastify-bee-queue')
 const fastify = Fastify()
 
 const QUEUE_NAME = 'some-queue-name'
@@ -43,24 +43,44 @@ fastify.post('/queue', async (request, response) => {
 fastify.listen(3000)
 
 // worker.js
-const QUEUE_NAME = 'some-queue-name'
-const Queue = require('bee-queue')
-// Create a worker queue instance to access jobs created by the Queue on the
-// web server.
-const queue = new Queue(QUEUE_NAME, { redis: 'redis://127.0.0.1' })
 
-queue.on('ready', () => {
-  // Process the Job
-  queue.process((job, done) => {
-      const result = job.data.x + job.data.y
-      done(null, result)
-  })
-})
+// The workerBees function provides a convenience wrapper for creating
+// and configuring Queue instances which will process jobs.
+const { workerBees } = require('@autotelic/fastify-bee-queue')
+const QUEUE_NAME = 'some-queue-name'
+
+// The worker Queue instances to be created.
+const workers = [
+  {
+    name: QUEUE_NAME,
+    processor: async (job) => job.data.x + job.data.y,
+    options: {}
+  }
+]
+
+// Base configuration applied to all worker Queues.
+const queueOptions = {
+  redis: 'redis://127.0.0.1',
+}
+
+const { start } = workerBees({ workers, queueOptions })
+
+// Start the workers and begin processing jobs. Start also returns a promise
+// which resolves to an array of the running worker Queues.
+const queues = await start()
 ```
+## Examples
+
+We provide the following usage examples and recipes:
+- [basic](./examples/basic/README.md)
+- [shared redis connection](./examples/shared-redis-connection/README.md)
+- [optimizing concurrency](./examples/optimizing-concurrency/README.md)
 
 ## API
 
-### Options
+### Plugin
+
+#### Options
 
 - `namespace`: The namespace that thee plugin decorators will be added to.
 Defaults to `bq`
@@ -68,12 +88,12 @@ Defaults to `bq`
 All remaining options will be passed to the Queue instances when they are created.
 For more details please refer to the Bee Queue [settings documentation](https://github.com/bee-queue/bee-queue#settings)
 
-### Decorators
+#### Decorators
 
 The plugin exposes the following as decorators under the configured namespace.
 By default this namespace is `bq`
 
-#### `createProducer: (name: string, opts: Object)`
+##### `createProducer: (name: string, opts: Object)`
 
 creates a "Producer" Queue instance. producer Queues are unable to process jobs or
 receive messages. They are primarily used to add jobs to a Queue.
@@ -83,7 +103,7 @@ object.
 
 `opts`: The Queue instance settings.
 
-#### `create: (name: string, opts: Object)`
+##### `create: (name: string, opts: Object)`
 
 Creates a worker Queue instance. This queue can process jobs and send/receive messages.
 
@@ -92,10 +112,26 @@ object.
 
 `opts`: The Queue instance settings.
 
-#### `queues: Object`
+##### `queues: Object`
 
 The key/value store where all created Queue instances are stored. They may be accessed by queue name. The plugin will throw an error if duplicate keys are added
 to the queues object.
+
+### Workers
+
+Utilities for creating bee-queue workers.
+
+#### `workerBees: (configuration: Object) => Object<{ start: () => Promise<Array[Queues]> }>`
+
+Creates and starts bee-queue workers for processing jobs.
+
+- `configuration` The configuration object for worker bees, expects fields:
+  - `queueOptions`: The Queue [settings](https://github.com/bee-queue/bee-queue#settings)) which will be applied to all worker Queues.
+  - `workers: Object` - A worker configuration Object which contains fields:
+    - `name: string` - The Name of the queue
+    - `processor: () => Promise<Any>` - An async method to process jobs from the queue.
+    - `options: Object` - The Queue settings which will be applied only to this worker Queue.
+
 
 ## Github Actions/Workflows
 
