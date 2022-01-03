@@ -34,7 +34,7 @@
     "fastify-plugin": "^3.0.0"
   },
   "devDependencies": {
-    "ava": "^3.15.0",
+    "ava": "^4.0.0",
     "c8": "^7.10.0",
     "fastify": "^3.0.0",
     "fastify-cli": "^2.5.1",
