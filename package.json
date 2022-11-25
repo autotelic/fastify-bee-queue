@@ -39,7 +39,7 @@
     "fastify": "^3.0.0",
     "fastify-cli": "^2.5.1",
     "fastify-redis": "^4.3.3",
-    "lint-staged": "^12.1.2",
+    "lint-staged": "^13.0.4",
     "sinon": "^12.0.1",
     "standard": "^16.0.3",
     "throng": "^5.0.0"
